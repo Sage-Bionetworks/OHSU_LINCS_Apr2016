@@ -108,21 +108,17 @@ print(tab, type="html", include.rownames=FALSE)
 ## Portal
 * Continue refinement of content
 * 'Contextual' help for definitions
-* Content for the computational scientists
-
-## Data access
+* Content for computational scientists
 * More 'use case' examples for data access
 
 ## Annotations
-* LINCS-wide annotations - automated system for capturing these in MEP-LINCS - push to Synapse
-
-
-## Images
-* Connecting raw data back to images in Omero
+* More integration of LINCS-wide annotations 
+* Use the existing system for capturing these and push to Synapse
 
 ## Data interaction
 * Standalone reports are not enough for users
 * Cannot analyze across data sets
+* Develop 'app' (Shiny) to facilitate this
 
 ## Protocols
 * Protocol updates
