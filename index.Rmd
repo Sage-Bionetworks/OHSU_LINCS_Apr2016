@@ -1,0 +1,166 @@
+---
+title: "Synapse"
+subtitle: "MEP-LINCS, OHSU"
+author: "Kenneth Daily, Sage Bionetworks (kenneth.daily@sagebase.org)"
+date: "2015-05-18"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    logo: ./img/sage_logo.png
+---
+
+```{r loadlibs, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, eval=TRUE}
+library(knitr)
+library(dplyr)
+library(xtable)
+library(synapseClient)
+synapseLogin()
+
+# control what is output when knitting
+# These can be overridden in specific chunks
+knitr::opts_chunk$set(
+  echo=FALSE,
+  warning=FALSE,
+  message=FALSE,
+  error = FALSE,
+  tidy = FALSE)
+```
+
+```{r include=TRUE, eval=FALSE}
+library(rGithubClient)
+library(knit2synapse)
+library(synapseClient)
+synapseLogin()
+
+myFileName <- "index.Rmd"
+# thisScript <- getPermlink(getRepo("Sage-Bionetworks/20150518_LINCS"), 
+#                           myFileName)
+
+# thisScript <- "https://sage-bionetworks.github.io/20150518_LINCS/index.html"
+# thisFile <- File(thisScript, name=myFileName, parentId="syn4212390", synapseStore=FALSE)
+# thisFile <- synStore(thisFile)
+
+# knitfile2synapse(file = myFileName,
+#                  owner = thisFile@properties$id, 
+#                  wikiName = "Presentation at OHSU for MEP-LINCS.",
+#                  overwrite=T)
+
+```
+
+# Where we are
+
+## MEP-LINCS Synapse Portal
+
+<div class="centered">
+https://www.synapse.org/mep_lincs
+
+<img src='./img/portal.png' width='75%' alt='Portal'>
+
+</div>
+
+## Major reorganization of content
+
+Creating a narrative and path for new users to go through:
+
+<img src='./img/buttons.png' width='75%' alt='Buttons'>
+
+* Education about MEP-LINCS
+* Direction to get the data
+* Description of the data
+
+Focused on the end-user who wants to see the final results.
+
+## Data Releases
+
+* First [data release](https://www.synapse.org/#!Synapse:syn2862345/wiki/394513) of PC3, MCF7 and YAPC lines
+
+<div class="centered">
+```{r results='asis',}
+res <- synTableQuery("SELECT Level,COUNT(Level) FROM syn5724840 GROUP BY Level")@values %>% 
+  rename(`Number of files`=`COUNT(Level)`)
+tab <- xtable(res)
+print(tab, type="html", include.rownames=FALSE)
+```
+</div>
+
+## Data Releases
+<div class="columns-2">
+<img src='./img/provenanceExample.png' width='40%' alt='Provenance'>
+
+* Automated process for generating analyzed data
+* Automated process for generating a [manifest table](https://www.synapse.org/#!Synapse:syn5724840) and the release page
+* [Document and describe](https://www.synapse.org/#!Synapse:syn2862345/wiki/394651) how to get the data (possibly all of it)
+* Provenance to follow data backwards to source (and code)
+
+</div>
+
+## Interactive data visualization
+
+* Users can view directly in Synapse and download for later use
+* On a per cell line/staining set basis
+
+<div class="centered">
+<img src='./img/heatmap.png' width='60%' alt='Heatmap'>
+</div>
+
+# To do
+
+## Portal
+* Continue refinement of content
+* 'Contextual' help for definitions
+* Content for the computational scientists
+
+## Data access
+* More 'use case' examples for data access
+
+## Annotations
+* LINCS-wide annotations - automated system for capturing these in MEP-LINCS - push to Synapse
+
+
+## Images
+* Connecting raw data back to images in Omero
+
+## Data interaction
+* Standalone reports are not enough for users
+* Cannot analyze across data sets
+
+## Protocols
+* Protocol updates
+* Connect to provenance where appropriate
+
+```{r results='asis'}
+res <- synapseQuery('select name,id,versionNumber,contributor,step from file where parentId=="syn2862347" and fileSubType=="SOP" and legacy!="true" ORDER BY step ASC')
+colnames(res) <- gsub("file\\.", "", colnames(res))
+tab <- xtable(res)
+print(tab, type="html", include.rownames=FALSE)
+
+```
+
+## Next data release
+* Streamline automation and testing before a release (completeness of annotations, provenance, release notes)
+* Handling and communicating changes to current files
+
+# New in Synapse
+
+## Annotations
+
+* Better management of annotations (required annotations)
+* Faceted search to improve finding data
+
+<div class="centered">
+<img src='./img/TableFacetsOne.png' width='60%' alt='Faceted search'>
+</div>
+
+## Documentation
+
+* New Synapse-specific help documentation
+
+<div class='centered'>
+http://docs.synapse.org/
+</div>
+
+
+## Thank you! | Questions?
+
+* [MEP-LINCS](http://www.lincsproject.org/centers/data-and-signature-generating-centers/oregon-u/) Group
+* [Sage Bionetworks](http://sagebase.org/)
