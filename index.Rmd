@@ -29,6 +29,34 @@ knitr::opts_chunk$set(
 synapseLogin()
 ```
 
+# Sage Bionetworks and Synapse
+
+---
+
+<img src='./img/synapse.png' width='50%'>
+
+<br/>
+
+* A workspace that allows you to **aggregate**, **describe**, and **share** research
+* A tool to improve **reproducibility** of data intensive science, recording progress as you work
+* A set of living research projects enabling contribution to large-scale collaborative solutions
+
+<div class="notes">
+Enabling researchers to contribute to large-scale collaborative science across institutions
+</div>
+
+---
+
+<div class="centered">
+<img src='./img/runanywhere.png' width='95%'>
+</div>
+
+## Multiple ways to access | Synapse API
+
+<div class="centered">
+<img src='./img/synapseinteraction.png' width='60%'>
+</div>
+
 # Where We Are
 
 ## MEP-LINCS Synapse Portal
