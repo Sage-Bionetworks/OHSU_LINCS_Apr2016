@@ -1,8 +1,8 @@
 ---
-title: "Synapse"
+title: "Synapse: Putting It All Together"
 subtitle: "MEP-LINCS, OHSU"
 author: "Kenneth Daily, Sage Bionetworks (kenneth.daily@sagebase.org)"
-date: "2015-05-18"
+date: "2016-04-11"
 output: 
   ioslides_presentation:
     widescreen: true
@@ -14,7 +14,6 @@ library(knitr)
 library(dplyr)
 library(xtable)
 library(synapseClient)
-synapseLogin()
 
 # control what is output when knitting
 # These can be overridden in specific chunks
@@ -26,75 +25,55 @@ knitr::opts_chunk$set(
   tidy = FALSE)
 ```
 
-```{r include=TRUE, eval=FALSE}
-library(rGithubClient)
-library(knit2synapse)
-library(synapseClient)
+```{r eval=FALSE}
 synapseLogin()
-
-myFileName <- "index.Rmd"
-# thisScript <- getPermlink(getRepo("Sage-Bionetworks/20150518_LINCS"), 
-#                           myFileName)
-
-# thisScript <- "https://sage-bionetworks.github.io/20150518_LINCS/index.html"
-# thisFile <- File(thisScript, name=myFileName, parentId="syn4212390", synapseStore=FALSE)
-# thisFile <- synStore(thisFile)
-
-# knitfile2synapse(file = myFileName,
-#                  owner = thisFile@properties$id, 
-#                  wikiName = "Presentation at OHSU for MEP-LINCS.",
-#                  overwrite=T)
-
 ```
 
-# Where we are
+# Where We Are
 
 ## MEP-LINCS Synapse Portal
 
 <div class="centered">
 https://www.synapse.org/mep_lincs
 
-<img src='./img/portal.png' width='75%' alt='Portal'>
+<img src='./img/portal.png' width='85%' alt='Portal'>
 
 </div>
 
-## Major reorganization of content
-
-Creating a narrative and path for new users to go through:
+## Major reorganization of content | Created a narrative path for new users to follow
 
 <img src='./img/buttons.png' width='75%' alt='Buttons'>
 
-* Education about MEP-LINCS
-* Direction to get the data
-* Description of the data
+* [Education]() about MEP-LINCS
+* Description of the [data generation]()
+* Instructions on data [visualization]() and [download]()
 
-Focused on the end-user who wants to see the final results.
+Focused on the end-user who wants to see processed data and final results.
 
-## Data Releases
+## Data Releases | We had one!
 
-* First [data release](https://www.synapse.org/#!Synapse:syn2862345/wiki/394513) of PC3, MCF7 and YAPC lines
+* First [data release](https://www.synapse.org/#!Synapse:syn2862345/wiki/394513)
+* PC3, MCF7 and YAPC lines
 
-<div class="centered">
-```{r results='asis',}
+```{r results='asis', eval=FALSE, include=TRUE}
 res <- synTableQuery("SELECT Level,COUNT(Level) FROM syn5724840 GROUP BY Level")@values %>% 
   rename(`Number of files`=`COUNT(Level)`)
 tab <- xtable(res)
 print(tab, type="html", include.rownames=FALSE)
 ```
-</div>
 
-## Data Releases
+## Data Releases | First release details
 <div class="columns-2">
-<img src='./img/provenanceExample.png' width='40%' alt='Provenance'>
-
-* Automated process for generating analyzed data
+* (Mostly) automated process for generating analyzed data, putting in Synapse
 * Automated process for generating a [manifest table](https://www.synapse.org/#!Synapse:syn5724840) and the release page
 * [Document and describe](https://www.synapse.org/#!Synapse:syn2862345/wiki/394651) how to get the data (possibly all of it)
-* Provenance to follow data backwards to source (and code)
+* 100% of data files (levels 0-4, reports, QC) have annotations
+* 100% of data files (levels 1-4, reports, QC) have provenance (including [code at github](https://github.com/MEP-LINCS/MEP_LINCS/)
 
+<a href="https://www.synapse.org/#!Synapse:syn5706843"><img src='./img/provenanceExample.png' width='35%' alt='Provenance'></a>
 </div>
 
-## Interactive data visualization
+## Interactive data reports
 
 * Users can view directly in Synapse and download for later use
 * On a per cell line/staining set basis
@@ -103,7 +82,15 @@ print(tab, type="html", include.rownames=FALSE)
 <img src='./img/heatmap.png' width='60%' alt='Heatmap'>
 </div>
 
-# To do
+## Interactive data visualization | Image files in Omero
+
+<div class="centered">
+<img src='./img/tableToOmero.png' width='80%' alt='Omero Table'>
+</div>
+
+[Example](https://meplincs.ohsu.edu/webclient/img_detail/412883/) from [syn5706712](https://www.synapse.org/#!Synapse:syn5706712)
+
+# Looking Forward
 
 ## Portal
 * Continue refinement of content
@@ -112,25 +99,16 @@ print(tab, type="html", include.rownames=FALSE)
 * More 'use case' examples for data access
 
 ## Annotations
-* More integration of LINCS-wide annotations 
+* Continue the integration of LINCS-wide annotations 
 * Use the existing system for capturing these and push to Synapse
 
 ## Data interaction
-* Standalone reports are not enough for users
-* Cannot analyze across data sets
-* Develop 'app' (Shiny) to facilitate this
+* The Standalone reports don't allow users to analyze across data sets
+* Develop 'app' (Shiny) to facilitate this - but what questions to focus on?
 
 ## Protocols
 * Protocol updates
 * Connect to provenance where appropriate
-
-```{r results='asis'}
-res <- synapseQuery('select name,id,versionNumber,contributor,step from file where parentId=="syn2862347" and fileSubType=="SOP" and legacy!="true" ORDER BY step ASC')
-colnames(res) <- gsub("file\\.", "", colnames(res))
-tab <- xtable(res)
-print(tab, type="html", include.rownames=FALSE)
-
-```
 
 ## Next data release
 * Streamline automation and testing before a release (completeness of annotations, provenance, release notes)
